@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<head onload="submitPayuForm()">
+  <style>
+    th,
+    tr,
+    td {
+      padding: 5px
+    }
+  </style>
+  <script type="text/javascript">
+    var hash = "{{ hashh }}";
+    function submitPayuForm() {
+      if (hash == '') {
+        return;
+      }
+      var payuForm = document.forms.payuForm;
+      payuForm.submit();
+    }
+  </script>
+</head>
+
+<body>
+
+  <br />
+  {% if error %}
+
+  <span style="color:red">Please fill all mandatory fields.</span>
+  <br />
+  <br />
+  {% endif %}
+
+  <form action={{ action }} method="post" name="payuForm">{% csrf_token %}
+    <input type="hidden" name="key" value="{{ MERCHANT_KEY }}" />
+    <input type="hidden" name="hash_string" value="{{ hash_string }}" />
+    <input type="hidden" name="hash" value="{{ hashh }}" />
+    <input type="hidden" name="posted" value="{{ posted }}" />
+    <input type="hidden" name="txnid" value="{{ txnid }}" />
+    <input type="hidden" name="curl" value="{{curl}}" />
+    <input type="hidden" name="surl" value="{{ surl }}" />
+    <input type="hidden" name="furl" value="{{ furl }}" />
+
+    <table style="margin-left:auto; margin-right: auto; margin-top: 50px;">
+
+      <tr>
+        <th>First Name </th>
+        <td><input name="firstname" id="firstname" value="{{ posted.firstname|default:'' }}" size="30" />&nbsp; &nbsp;
+          &nbsp; &nbsp; &nbsp; </td>
+        <th>Last Name </th>
+        <td><input name="lastname" id="lastname" value="{{ posted.lastname }}" size="30" /></td>
+      </tr>
+
+      <tr>
+        <th>Amount </th>
+        <td><input name="amount" value="{{ posted.amount|default:'' }}" size="30" /></td>
+        <th>PAN No. </th>
+        <td colspan="3"><input name="productinfo" value="{{ posted.productinfo|default:'' }}" size="30" /></td>
+      </tr>
+      <tr>
+        <th>Email </th>
+        <td><input name="email" id="email" value="{{ posted.email|default:'' }}" size="30" /></td>
+        <th>Phone </th>
+        <td><input name="phone" value="{{ posted.phone|default:'' }}" size="30" /></td>
+      </tr>
+
+      <!-- <tr>
+        <td><b>Optional Parameters</b></td>
+      </tr> -->
+
+      <tr>
+        <th>Address Line 1 &nbsp; &nbsp; &nbsp; </th>
+        <td><input name="address1" value="{{ posted.address1 }}" size="30" /></td>
+        <th>Address Line 2 &nbsp; &nbsp; &nbsp; </th>
+        <td><input name="address2" value="{{ posted.address2 }}" size="30" /></td>
+      </tr>
+      <tr>
+        <th>City </th>
+        <td><input name="city" value="{{ posted.city }}" size="30" /></td>
+        <th>State </th>
+        <td><input name="state" value="{{ posted.state }}" size="30" /></td>
+      </tr>
+      <tr>
+        <th>Zipcode </th>
+        <td><input name="zipcode" value="{{ posted.zipcode }}" size="30" /></td>
+        <!-- <td>Country: </td> -->
+        <td><input type="hidden" name="country" value="{{ posted.country|default:'India' }}" /></td>
+        <td><b>*WE Accept Only Indian Currency</b></td>
+      </tr>
+
+
+      <tr>
+        <td colspan="3"><input type="hidden" name="service_provider" value="payu_paisa" size="64" /></td>
+      </tr>
+
+      <tr>
+        <!-- <td>UDF1: </td> -->
+        <td><input type="hidden" name="udf1" value="{{ posted.udf1 }}" /></td>
+        <!-- <td>UDF2: </td> -->
+        <td><input type="hidden" name="udf2" value="{{ posted.udf2 }}" /></td>
+      </tr>
+      <tr>
+        <!-- <td>UDF3: </td> -->
+        <td><input type="hidden" name="udf3" value="{{ posted.udf3 }}" /></td>
+        <!-- <td>UDF4: </td> -->
+        <td><input type="hidden" name="udf4" value="{{ posted.udf4 }}" /></td>
+      </tr>
+      <tr>
+        <!-- <td>UDF5: </td> -->
+        <td><input type="hidden" name="udf5" value="{{ posted.udf5 }}" /></td>
+        <!-- <td>PG: </td> -->
+        <td><input type="hidden" name="pg" value="{{ posted.PG }}" /></td>
+      </tr>
+
+      <td><input type="submit" value="Donate" /></td>
+
+
+      </tr>
+    </table>
+  </form>
+</body>
+
+{% endblock content %}
